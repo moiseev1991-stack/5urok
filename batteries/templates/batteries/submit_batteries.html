@@ -1,0 +1,69 @@
+{% extends 'batteries/base.html' %}
+
+{% block title %}Сдать батарейки - Переработка батареек{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center; margin-bottom: 30px; color: #333;">📦 Сдать батарейки</h1>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+    <div style="background: #e7f3ff; padding: 20px; border-radius: 10px; text-align: center;">
+        <h3 style="color: #667eea; margin-bottom: 10px;">{{ user_total }}</h3>
+        <p style="color: #666;">Ваших батареек</p>
+    </div>
+    <div style="background: #fff3cd; padding: 20px; border-radius: 10px; text-align: center;">
+        <h3 style="color: #856404; margin-bottom: 10px;">{{ user_count }}</h3>
+        <p style="color: #666;">Ваших сдач</p>
+    </div>
+</div>
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <h2 style="margin-bottom: 20px; color: #333;">Добавить новую сдачу</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+            {{ form.quantity }}
+            {% if form.quantity.errors %}
+                <div style="color: #dc3545; margin-top: 5px;">{{ form.quantity.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.date_submitted.id_for_label }}">{{ form.date_submitted.label }}</label>
+            {{ form.date_submitted }}
+            {% if form.date_submitted.errors %}
+                <div style="color: #dc3545; margin-top: 5px;">{{ form.date_submitted.errors }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Добавить</button>
+    </form>
+</div>
+
+{% if recent_submissions %}
+<div style="margin-top: 40px;">
+    <h2 style="margin-bottom: 20px; color: #333;">Последние сдачи</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата сдачи</th>
+                <th>Количество</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in recent_submissions %}
+            <tr>
+                <td>{{ submission.date_submitted|date:"d.m.Y H:i" }}</td>
+                <td>{{ submission.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'profile' %}" class="btn btn-secondary">Посмотреть все сдачи</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

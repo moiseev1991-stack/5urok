@@ -1,0 +1,55 @@
+{% extends 'batteries/base.html' %}
+
+{% block title %}Регистрация - Переработка батареек{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center; margin-bottom: 30px; color: #333;">Регистрация</h1>
+
+<form method="post" style="max-width: 500px; margin: 0 auto;">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div style="color: #dc3545; margin-top: 5px;">{{ form.username.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div style="color: #dc3545; margin-top: 5px;">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Пароль</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div style="color: #dc3545; margin-top: 5px;">{{ form.password1.errors }}</div>
+        {% endif %}
+        {% if form.password1.help_text %}
+            <small style="color: #666; display: block; margin-top: 5px;">{{ form.password1.help_text }}</small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Подтверждение пароля</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div style="color: #dc3545; margin-top: 5px;">{{ form.password2.errors }}</div>
+        {% endif %}
+        {% if form.password2.help_text %}
+            <small style="color: #666; display: block; margin-top: 5px;">{{ form.password2.help_text }}</small>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+</form>
+
+<div style="text-align: center; margin-top: 20px;">
+    <p>Уже есть аккаунт? <a href="{% url 'login' %}" style="color: #667eea;">Войти</a></p>
+</div>
+{% endblock %}

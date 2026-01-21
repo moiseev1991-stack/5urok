@@ -1,0 +1,55 @@
+{% extends 'batteries/base.html' %}
+
+{% block title %}Профиль - Переработка батареек{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center; margin-bottom: 30px; color: #333;">👤 Профиль пользователя</h1>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
+    <h2 style="margin-bottom: 15px;">{{ user.username }}</h2>
+    <p style="font-size: 18px; opacity: 0.9;">Email: {{ user.email|default:"не указан" }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+    <div style="background: #e7f3ff; padding: 20px; border-radius: 10px; text-align: center;">
+        <h3 style="color: #667eea; margin-bottom: 10px;">{{ user_total }}</h3>
+        <p style="color: #666;">Всего батареек</p>
+    </div>
+    <div style="background: #fff3cd; padding: 20px; border-radius: 10px; text-align: center;">
+        <h3 style="color: #856404; margin-bottom: 10px;">{{ submission_count }}</h3>
+        <p style="color: #666;">Всего сдач</p>
+    </div>
+</div>
+
+<h2 style="margin-bottom: 20px; color: #333;">История сдач</h2>
+
+{% if user_submissions %}
+<table>
+    <thead>
+        <tr>
+            <th>Дата сдачи</th>
+            <th>Количество батареек</th>
+            <th>Дата добавления записи</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for submission in user_submissions %}
+        <tr>
+            <td>{{ submission.date_submitted|date:"d.m.Y H:i" }}</td>
+            <td>{{ submission.quantity }}</td>
+            <td>{{ submission.created_at|date:"d.m.Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+    <p style="color: #666; font-size: 18px; margin-bottom: 20px;">У вас пока нет записей о сданных батарейках</p>
+    <a href="{% url 'submit_batteries' %}" class="btn btn-primary">Добавить первую сдачу</a>
+</div>
+{% endif %}
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="{% url 'submit_batteries' %}" class="btn btn-primary">Добавить новую сдачу</a>
+</div>
+{% endblock %}
