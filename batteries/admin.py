@@ -4,7 +4,7 @@ from .models import BatterySubmission
 
 @admin.register(BatterySubmission)
 class BatterySubmissionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'quantity', 'date_submitted', 'created_at')
-    list_filter = ('date_submitted', 'created_at')
+    list_display = ('user', 'device_type', 'quantity', 'date_submitted', 'created_at')
+    list_filter = ('device_type', 'date_submitted', 'created_at')
     search_fields = ('user__username',)
     readonly_fields = ('created_at',)

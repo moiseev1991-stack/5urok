@@ -3,40 +3,87 @@
 {% block title %}Главная - Переработка батареек{% endblock %}
 
 {% block content %}
-<h1 style="text-align: center; margin-bottom: 30px;">♻️ Переработка батареек</h1>
+<h1 style="text-align: center; margin-bottom: 30px;">♻️ Переработка устройств</h1>
 
 <div class="stats-box">
-    <h2>{{ total_batteries }}</h2>
-    <p>батареек сдано на переработку</p>
+    <h2>{{ total_devices }}</h2>
+    <p>устройств сдано на переработку</p>
 </div>
 
 <div style="background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; margin-top: 20px;">
     <h2 style="margin-bottom: 15px; color: #f0f6fc;">📊 Статистика</h2>
     <p style="font-size: 16px; margin-bottom: 10px;"><strong>Всего пользователей:</strong> {{ total_users }}</p>
-    <p style="font-size: 16px;"><strong>Всего батареек:</strong> {{ total_batteries }}</p>
+    <p style="font-size: 16px;"><strong>Всего устройств:</strong> {{ total_devices }}</p>
+</div>
+
+{% if stats_by_type %}
+<div style="margin-top: 24px; background-color: #0d1117; border: 1px solid #30363d; padding: 24px; border-radius: 6px;">
+    <h2 style="margin-bottom: 20px; color: #f0f6fc;">📦 По типам устройств</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+        {% for device_type, stats in stats_by_type.items %}
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 6px;">
+            <h3 style="color: #58a6ff; margin-bottom: 8px; font-size: 24px;">{{ stats.total }}</h3>
+            <p style="color: #8b949e; margin-bottom: 4px;">{{ stats.name }}</p>
+            <p style="color: #6e7681; font-size: 12px;">{{ stats.count }} записей</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div style="margin-top: 24px; background-color: #0d1117; border: 1px solid #30363d; padding: 24px; border-radius: 6px;">
+    <h2 style="margin-bottom: 20px; color: #f0f6fc;">📈 Статистика по времени</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 6px; text-align: center;">
+            <h3 style="color: #58a6ff; margin-bottom: 8px; font-size: 28px;">{{ total_7_days }}</h3>
+            <p style="color: #8b949e;">За 7 дней</p>
+        </div>
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 6px; text-align: center;">
+            <h3 style="color: #58a6ff; margin-bottom: 8px; font-size: 28px;">{{ total_30_days }}</h3>
+            <p style="color: #8b949e;">За 30 дней</p>
+        </div>
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 6px; text-align: center;">
+            <h3 style="color: #58a6ff; margin-bottom: 8px; font-size: 28px;">{{ total_90_days }}</h3>
+            <p style="color: #8b949e;">За 90 дней</p>
+        </div>
+    </div>
+    
+    {% if stats_30_days %}
+    <div style="margin-top: 24px;">
+        <h3 style="color: #f0f6fc; margin-bottom: 16px; font-size: 18px;">За последние 30 дней по типам:</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+            {% for device_type, stats in stats_30_days.items %}
+            <div style="background-color: #161b22; border: 1px solid #30363d; padding: 12px; border-radius: 6px;">
+                <p style="color: #58a6ff; font-weight: 600; margin-bottom: 4px;">{{ stats.total }}</p>
+                <p style="color: #8b949e; font-size: 14px;">{{ stats.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 {% if not user.is_authenticated %}
 <div style="margin-top: 24px; text-align: center; padding: 32px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px;">
     <h3 style="margin-bottom: 15px; color: #f0f6fc;">Присоединяйтесь к нам!</h3>
-    <p style="margin-bottom: 20px; color: #8b949e;">Зарегистрируйтесь или войдите, чтобы начать вести учёт своих сданных батареек</p>
+    <p style="margin-bottom: 20px; color: #8b949e;">Зарегистрируйтесь или войдите, чтобы начать вести учёт своих сданных устройств</p>
     <a href="{% url 'register' %}" class="btn btn-primary" style="margin-right: 10px;">Регистрация</a>
     <a href="{% url 'login' %}" class="btn btn-secondary">Вход</a>
 </div>
 {% else %}
 <div style="margin-top: 24px; text-align: center; padding: 32px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px;">
     <h3 style="margin-bottom: 15px; color: #f0f6fc;">Начните прямо сейчас!</h3>
-    <p style="margin-bottom: 20px; color: #8b949e;">Добавьте информацию о сданных батарейках</p>
-    <a href="{% url 'submit_batteries' %}" class="btn btn-primary">Сдать батарейки</a>
+    <p style="margin-bottom: 20px; color: #8b949e;">Добавьте информацию о сданных устройствах</p>
+    <a href="{% url 'submit_batteries' %}" class="btn btn-primary">Сдать устройства</a>
 </div>
 {% endif %}
 
 <div style="margin-top: 24px; padding: 20px; background-color: #0d1117; border: 1px solid #30363d; border-left: 4px solid #d29922; border-radius: 6px;">
-    <h3 style="margin-bottom: 10px; color: #f0f6fc;">💡 Почему важно сдавать батарейки?</h3>
+    <h3 style="margin-bottom: 10px; color: #f0f6fc;">💡 Почему важно сдавать устройства на переработку?</h3>
     <ul style="color: #c9d1d9; line-height: 1.8; padding-left: 20px;">
-        <li>Батарейки содержат токсичные вещества, которые загрязняют почву и воду</li>
-        <li>Переработка позволяет извлечь ценные металлы (цинк, марганец, железо)</li>
-        <li>Каждая переработанная батарейка - это шаг к чистой планете</li>
+        <li>Батарейки, лампы и power banks содержат токсичные вещества, которые загрязняют почву и воду</li>
+        <li>Переработка позволяет извлечь ценные металлы и материалы</li>
+        <li>Каждое переработанное устройство - это шаг к чистой планете</li>
     </ul>
 </div>
 {% endblock %}

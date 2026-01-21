@@ -1,14 +1,15 @@
 {% extends 'batteries/base.html' %}
+{% load static %}
 
-{% block title %}Сдать батарейки - Переработка батареек{% endblock %}
+{% block title %}Сдать устройства - Переработка устройств{% endblock %}
 
 {% block content %}
-<h1 style="text-align: center; margin-bottom: 30px;">📦 Сдать батарейки</h1>
+<h1 style="text-align: center; margin-bottom: 30px;">📦 Сдать устройства</h1>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px;">
     <div style="background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; text-align: center;">
         <h3 style="color: #58a6ff; margin-bottom: 10px;">{{ user_total }}</h3>
-        <p style="color: #8b949e;">Ваших батареек</p>
+        <p style="color: #8b949e;">Ваших устройств</p>
     </div>
     <div style="background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; text-align: center;">
         <h3 style="color: #58a6ff; margin-bottom: 10px;">{{ user_count }}</h3>
@@ -16,11 +17,51 @@
     </div>
 </div>
 
+{% if user_stats_by_type %}
+<div style="margin-bottom: 30px; background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px;">
+    <h3 style="color: #f0f6fc; margin-bottom: 16px; font-size: 18px;">Ваша статистика по типам:</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+        {% for stat in user_stats_by_type %}
+        {% if stat.device_type == 'battery' %}
+            {% with device_name='Батарейки' %}
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 12px; border-radius: 6px;">
+            <p style="color: #58a6ff; font-weight: 600; margin-bottom: 4px;">{{ stat.total }}</p>
+            <p style="color: #8b949e; font-size: 14px;">{{ device_name }}</p>
+        </div>
+            {% endwith %}
+        {% elif stat.device_type == 'lamp' %}
+            {% with device_name='Лампы' %}
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 12px; border-radius: 6px;">
+            <p style="color: #58a6ff; font-weight: 600; margin-bottom: 4px;">{{ stat.total }}</p>
+            <p style="color: #8b949e; font-size: 14px;">{{ device_name }}</p>
+        </div>
+            {% endwith %}
+        {% elif stat.device_type == 'powerbank' %}
+            {% with device_name='Power Banks' %}
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 12px; border-radius: 6px;">
+            <p style="color: #58a6ff; font-weight: 600; margin-bottom: 4px;">{{ stat.total }}</p>
+            <p style="color: #8b949e; font-size: 14px;">{{ device_name }}</p>
+        </div>
+            {% endwith %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
 <div style="max-width: 600px; margin: 0 auto;">
     <h2 style="margin-bottom: 20px;">Добавить новую сдачу</h2>
     
     <form method="post">
         {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.device_type.id_for_label }}">{{ form.device_type.label }}</label>
+            {{ form.device_type }}
+            {% if form.device_type.errors %}
+                <div style="color: #f85149; margin-top: 5px; font-size: 14px;">{{ form.device_type.errors }}</div>
+            {% endif %}
+        </div>
         
         <div class="form-group">
             <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
@@ -48,6 +89,7 @@
     <table>
         <thead>
             <tr>
+                <th>Тип</th>
                 <th>Дата сдачи</th>
                 <th>Количество</th>
             </tr>
@@ -55,6 +97,12 @@
         <tbody>
             {% for submission in recent_submissions %}
             <tr>
+                <td>
+                    {% if submission.device_type == 'battery' %}Батарейки
+                    {% elif submission.device_type == 'lamp' %}Лампы
+                    {% elif submission.device_type == 'powerbank' %}Power Banks
+                    {% else %}{{ submission.device_type }}{% endif %}
+                </td>
                 <td>{{ submission.date_submitted|date:"d.m.Y H:i" }}</td>
                 <td>{{ submission.quantity }}</td>
             </tr>

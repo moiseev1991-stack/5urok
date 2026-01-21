@@ -1,6 +1,6 @@
 {% extends 'batteries/base.html' %}
 
-{% block title %}Профиль - Переработка батареек{% endblock %}
+{% block title %}Профиль - Переработка устройств{% endblock %}
 
 {% block content %}
 <h1 style="text-align: center; margin-bottom: 30px;">👤 Профиль пользователя</h1>
@@ -13,7 +13,7 @@
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px;">
     <div style="background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; text-align: center;">
         <h3 style="color: #58a6ff; margin-bottom: 10px;">{{ user_total }}</h3>
-        <p style="color: #8b949e;">Всего батареек</p>
+        <p style="color: #8b949e;">Всего устройств</p>
     </div>
     <div style="background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; text-align: center;">
         <h3 style="color: #58a6ff; margin-bottom: 10px;">{{ submission_count }}</h3>
@@ -21,20 +21,47 @@
     </div>
 </div>
 
+{% if user_stats_by_type %}
+<div style="margin-bottom: 30px; background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px;">
+    <h3 style="color: #f0f6fc; margin-bottom: 16px; font-size: 18px;">Статистика по типам:</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+        {% for stat in user_stats_by_type %}
+        <div style="background-color: #161b22; border: 1px solid #30363d; padding: 12px; border-radius: 6px;">
+            <p style="color: #58a6ff; font-weight: 600; margin-bottom: 4px;">{{ stat.total }}</p>
+            <p style="color: #8b949e; font-size: 14px;">
+                {% if stat.device_type == 'battery' %}Батарейки
+                {% elif stat.device_type == 'lamp' %}Лампы
+                {% elif stat.device_type == 'powerbank' %}Power Banks
+                {% else %}{{ stat.device_type }}{% endif %}
+            </p>
+            <p style="color: #6e7681; font-size: 12px;">{{ stat.count }} записей</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
 <h2 style="margin-bottom: 20px;">История сдач</h2>
 
 {% if user_submissions %}
 <table>
     <thead>
         <tr>
+            <th>Тип устройства</th>
             <th>Дата сдачи</th>
-            <th>Количество батареек</th>
+            <th>Количество</th>
             <th>Дата добавления записи</th>
         </tr>
     </thead>
     <tbody>
         {% for submission in user_submissions %}
         <tr>
+            <td>
+                {% if submission.device_type == 'battery' %}Батарейки
+                {% elif submission.device_type == 'lamp' %}Лампы
+                {% elif submission.device_type == 'powerbank' %}Power Banks
+                {% else %}{{ submission.device_type }}{% endif %}
+            </td>
             <td>{{ submission.date_submitted|date:"d.m.Y H:i" }}</td>
             <td>{{ submission.quantity }}</td>
             <td>{{ submission.created_at|date:"d.m.Y H:i" }}</td>
@@ -44,7 +71,7 @@
 </table>
 {% else %}
 <div style="text-align: center; padding: 40px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px;">
-    <p style="color: #8b949e; font-size: 16px; margin-bottom: 20px;">У вас пока нет записей о сданных батарейках</p>
+    <p style="color: #8b949e; font-size: 16px; margin-bottom: 20px;">У вас пока нет записей о сданных устройствах</p>
     <a href="{% url 'submit_batteries' %}" class="btn btn-primary">Добавить первую сдачу</a>
 </div>
 {% endif %}

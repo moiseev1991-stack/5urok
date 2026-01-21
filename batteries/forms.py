@@ -26,16 +26,21 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class BatterySubmissionForm(forms.ModelForm):
-    """Форма для ввода информации о сданных батарейках"""
+    """Форма для ввода информации о сданных устройствах"""
     
     class Meta:
         model = BatterySubmission
-        fields = ['quantity', 'date_submitted']
+        fields = ['device_type', 'quantity', 'date_submitted']
         labels = {
-            'quantity': 'Количество батареек',
+            'device_type': 'Тип устройства',
+            'quantity': 'Количество',
             'date_submitted': 'Дата сдачи',
         }
         widgets = {
+            'device_type': forms.Select(attrs={
+                'class': 'form-control',
+                'style': 'background-color: #0d1117; border: 1px solid #30363d; color: #c9d1d9;'
+            }),
             'quantity': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'min': 1,
