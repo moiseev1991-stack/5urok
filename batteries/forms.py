@@ -39,10 +39,12 @@ class BatterySubmissionForm(forms.ModelForm):
             'quantity': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'min': 1,
-                'placeholder': 'Введите количество'
+                'placeholder': 'Введите количество',
+                'style': 'background-color: #0d1117; border: 1px solid #30363d; color: #c9d1d9;'
             }),
             'date_submitted': forms.DateTimeInput(attrs={
                 'class': 'form-control',
-                'type': 'datetime-local'
+                'type': 'datetime-local',
+                'style': 'background-color: #0d1117; border: 1px solid #30363d; color: #c9d1d9;'
             }),
         }

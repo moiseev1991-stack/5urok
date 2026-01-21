@@ -3,37 +3,37 @@
 {% block title %}Главная - Переработка батареек{% endblock %}
 
 {% block content %}
-<h1 style="text-align: center; margin-bottom: 30px; color: #333;">♻️ Переработка батареек</h1>
+<h1 style="text-align: center; margin-bottom: 30px;">♻️ Переработка батареек</h1>
 
 <div class="stats-box">
     <h2>{{ total_batteries }}</h2>
     <p>батареек сдано на переработку</p>
 </div>
 
-<div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
-    <h2 style="color: #333; margin-bottom: 15px;">📊 Статистика</h2>
-    <p style="font-size: 18px; margin-bottom: 10px;"><strong>Всего пользователей:</strong> {{ total_users }}</p>
-    <p style="font-size: 18px;"><strong>Всего батареек:</strong> {{ total_batteries }}</p>
+<div style="background-color: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; margin-top: 20px;">
+    <h2 style="margin-bottom: 15px; color: #f0f6fc;">📊 Статистика</h2>
+    <p style="font-size: 16px; margin-bottom: 10px;"><strong>Всего пользователей:</strong> {{ total_users }}</p>
+    <p style="font-size: 16px;"><strong>Всего батареек:</strong> {{ total_batteries }}</p>
 </div>
 
 {% if not user.is_authenticated %}
-<div style="margin-top: 30px; text-align: center; padding: 30px; background: #e7f3ff; border-radius: 10px;">
-    <h3 style="color: #333; margin-bottom: 15px;">Присоединяйтесь к нам!</h3>
-    <p style="margin-bottom: 20px; color: #666;">Зарегистрируйтесь или войдите, чтобы начать вести учёт своих сданных батареек</p>
+<div style="margin-top: 24px; text-align: center; padding: 32px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px;">
+    <h3 style="margin-bottom: 15px; color: #f0f6fc;">Присоединяйтесь к нам!</h3>
+    <p style="margin-bottom: 20px; color: #8b949e;">Зарегистрируйтесь или войдите, чтобы начать вести учёт своих сданных батареек</p>
     <a href="{% url 'register' %}" class="btn btn-primary" style="margin-right: 10px;">Регистрация</a>
     <a href="{% url 'login' %}" class="btn btn-secondary">Вход</a>
 </div>
 {% else %}
-<div style="margin-top: 30px; text-align: center; padding: 30px; background: #e7f3ff; border-radius: 10px;">
-    <h3 style="color: #333; margin-bottom: 15px;">Начните прямо сейчас!</h3>
-    <p style="margin-bottom: 20px; color: #666;">Добавьте информацию о сданных батарейках</p>
+<div style="margin-top: 24px; text-align: center; padding: 32px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px;">
+    <h3 style="margin-bottom: 15px; color: #f0f6fc;">Начните прямо сейчас!</h3>
+    <p style="margin-bottom: 20px; color: #8b949e;">Добавьте информацию о сданных батарейках</p>
     <a href="{% url 'submit_batteries' %}" class="btn btn-primary">Сдать батарейки</a>
 </div>
 {% endif %}
 
-<div style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 10px; border-left: 4px solid #ffc107;">
-    <h3 style="color: #333; margin-bottom: 10px;">💡 Почему важно сдавать батарейки?</h3>
-    <ul style="color: #666; line-height: 1.8; padding-left: 20px;">
+<div style="margin-top: 24px; padding: 20px; background-color: #0d1117; border: 1px solid #30363d; border-left: 4px solid #d29922; border-radius: 6px;">
+    <h3 style="margin-bottom: 10px; color: #f0f6fc;">💡 Почему важно сдавать батарейки?</h3>
+    <ul style="color: #c9d1d9; line-height: 1.8; padding-left: 20px;">
         <li>Батарейки содержат токсичные вещества, которые загрязняют почву и воду</li>
         <li>Переработка позволяет извлечь ценные металлы (цинк, марганец, железо)</li>
         <li>Каждая переработанная батарейка - это шаг к чистой планете</li>
